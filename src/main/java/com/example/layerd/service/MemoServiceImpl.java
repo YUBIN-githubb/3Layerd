@@ -59,13 +59,42 @@ public class MemoServiceImpl implements MemoService{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "id가 존재하지 않습니다.");
         }
 
-        if (title == null || contents == null || contents == null) {
+        if (title == null || contents == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "title과 contents 모두 입력되어야 합니다.");
         }
 
         memoById.update(title, contents);
 
         return new MemoResponseDto(memoById);
+
+    }
+
+    @Override
+    public MemoResponseDto updateTitle(Long id, String title, String contents) {
+        Memo memoById = respository.findMemoById(id);
+
+        if (memoById == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "id가 존재하지 않습니다.");
+        }
+
+        if (title == null || contents != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "title만 필수로 입력되어야 합니다.");
+        }
+
+        memoById.updateTitle(title);
+
+        return new MemoResponseDto(memoById);
+    }
+
+    @Override
+    public void deleteMemo(Long id) {
+        Memo memoById = respository.findMemoById(id);
+
+        if (memoById == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "id가 존재하지 않습니다.");
+        }
+
+        respository.deleteMemo(id);
 
     }
 }
