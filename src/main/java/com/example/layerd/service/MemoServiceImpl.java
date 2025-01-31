@@ -4,7 +4,9 @@ import com.example.layerd.dto.MemoRequestDto;
 import com.example.layerd.dto.MemoResponseDto;
 import com.example.layerd.entity.Memo;
 import com.example.layerd.repository.MemoRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -36,5 +38,34 @@ public class MemoServiceImpl implements MemoService{
         List<MemoResponseDto> allMemos = respository.findAllMemos();
 
         return allMemos;
+    }
+
+    @Override
+    public MemoResponseDto findMemoById(Long id) {
+        Memo memoById = respository.findMemoById(id);
+
+        if (memoById == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "id가 존재하지 않습니다.");
+        }
+
+        return new MemoResponseDto(memoById);
+    }
+
+    @Override
+    public MemoResponseDto updateMemo(Long id, String title, String contents) {
+        Memo memoById = respository.findMemoById(id);
+
+        if (memoById == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "id가 존재하지 않습니다.");
+        }
+
+        if (title == null || contents == null || contents == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "title과 contents 모두 입력되어야 합니다.");
+        }
+
+        memoById.update(title, contents);
+
+        return new MemoResponseDto(memoById);
+
     }
 }

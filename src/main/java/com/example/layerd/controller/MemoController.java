@@ -3,6 +3,7 @@ package com.example.layerd.controller;
 import com.example.layerd.dto.MemoRequestDto;
 import com.example.layerd.dto.MemoResponseDto;
 import com.example.layerd.entity.Memo;
+import com.example.layerd.repository.MemoRepository;
 import com.example.layerd.service.MemoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +40,22 @@ public class MemoController {
 
     //메모 목록 조회
     @GetMapping
-    public List<MemoResponseDto> findAllMemos() {
+    public ResponseEntity<List<MemoResponseDto>>  findAllMemos() {
 
-        return memoService.findAllMemos();
+        return new ResponseEntity<>(memoService.findAllMemos(), HttpStatus.OK);
+    }
+
+    //메모 단건 조회
+    @GetMapping("/{id}")
+    public ResponseEntity<MemoResponseDto> findMemoById(@PathVariable Long id) {
+
+        return new ResponseEntity<>(memoService.findMemoById(id), HttpStatus.OK);
+    }
+
+    //메모 전체 수정
+    @PutMapping("/{id}")
+    public ResponseEntity<MemoResponseDto> updateMemo(@PathVariable Long id, @RequestBody MemoRequestDto dto) {
+
+        return new ResponseEntity<>(memoService.updateMemo(id, dto.getTitle(), dto.getContents()), HttpStatus.OK);
     }
 }
