@@ -6,6 +6,8 @@ import com.example.layerd.entity.Memo;
 import com.example.layerd.repository.MemoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MemoServiceImpl implements MemoService{
 
@@ -27,5 +29,12 @@ public class MemoServiceImpl implements MemoService{
 
         return new MemoResponseDto(savedMemo);
 
+    }
+
+    @Override
+    public List<MemoResponseDto> findAllMemos() {
+        List<MemoResponseDto> allMemos = respository.findAllMemos();
+
+        return allMemos;
     }
 }

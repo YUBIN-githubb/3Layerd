@@ -6,13 +6,11 @@ import com.example.layerd.entity.Memo;
 import com.example.layerd.service.MemoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController //@Controller + @ResponseBody
@@ -31,12 +29,18 @@ public class MemoController {
         this.memoService = memoService;
     }
 
+    //메모 생성
     @PostMapping
     public ResponseEntity<MemoResponseDto> createMemo(@RequestBody MemoRequestDto dto) {
 
         //Service layer를 호출, 받은 응답 반환
-
-
         return new ResponseEntity<>(memoService.saveMemo(dto), HttpStatus.CREATED);
+    }
+
+    //메모 목록 조회
+    @GetMapping
+    public List<MemoResponseDto> findAllMemos() {
+
+        return memoService.findAllMemos();
     }
 }

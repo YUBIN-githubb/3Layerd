@@ -1,11 +1,10 @@
 package com.example.layerd.repository;
 
+import com.example.layerd.dto.MemoResponseDto;
 import com.example.layerd.entity.Memo;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class MemoRepositoryImpl implements MemoRepository{
@@ -20,5 +19,19 @@ public class MemoRepositoryImpl implements MemoRepository{
         memo.setId(memoId);
         memoList.put(memoId, memo);
         return memo;
+    }
+
+    @Override
+    public List<MemoResponseDto> findAllMemos() {
+        //리스트 초기화
+        List<MemoResponseDto> allMemos = new ArrayList<>();
+
+        //데이터베이스에 있는 값을 순회하면서 MemoResponseDto 객체를 만들고 초기화한 빈배열에 add
+        for (Memo memo : memoList.values()) {
+            MemoResponseDto responseDto = new MemoResponseDto(memo);
+            allMemos.add(responseDto);
+        }
+
+        return allMemos;
     }
 }
